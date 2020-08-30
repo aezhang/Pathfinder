@@ -41,6 +41,7 @@ public class Grid extends JPanel {
                     int loc = ((clck.x - 10) / 20) + width * ((clck.y - 10) / 20);
                     if (contents[loc] < 2) {
                         contents[loc] = 1;
+                        repaint();
                     } else if (contents[loc] == 4) {
                         contents[loc] = 1;
                         findPath();
@@ -59,8 +60,10 @@ public class Grid extends JPanel {
                         lastDrag = loc;
                         prevloc = loc;
                         lastDragVal = contents[loc];
+                        if (pathfinding) {
+                            findPath();
+                        }
                     }
-                    repaint();
                 }
             }
 
@@ -77,21 +80,25 @@ public class Grid extends JPanel {
                         repaint();
                         findPath();
                     } else {
-                        lastDrag = loc;
-                        if (lastDrag != prevloc) {
-                            contents[prevloc] = 0;
-                            prevloc = lastDrag;
-                        }
-                        contents[loc] = lastDragVal;
-                        if (lastDragVal == 2) {
-                            startloc = loc;
-                        } else {
-                            endloc = loc;
-                        }
-                        if (pathfinding) {
-                            findPath();
-                        } else {
-                            repaint();
+                        if (draggingSpecial) {
+                            if ((contents[loc] != 3 && lastDragVal == 2) || (lastDragVal == 3 && contents[loc] != 2)) {
+                                lastDrag = loc;
+                                if (lastDrag != prevloc) {
+                                    contents[prevloc] = 0;
+                                    prevloc = lastDrag;
+                                }
+                                contents[loc] = lastDragVal;
+                                if (lastDragVal == 2) {
+                                    startloc = loc;
+                                } else {
+                                    endloc = loc;
+                                }
+                                if (pathfinding) {
+                                    findPath();
+                                } else {
+                                    repaint();
+                                }
+                            }
                         }
                     }
                 }
@@ -214,7 +221,7 @@ public class Grid extends JPanel {
     }
 
     private void retracePath(Integer node) {
-        while (node != 0) {
+        while (node != startloc) {
             contents[node] = 4;
             node = pathfrom[node];
         }
