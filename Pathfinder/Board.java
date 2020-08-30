@@ -1,43 +1,51 @@
 package Pathfinder;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.BoxLayout;
+import javax.swing.BorderFactory;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Board extends JPanel {
-    public Board() {
-        initBoard();
+    public Board(int w, int h) {
+        initBoard(w, h);
     }
 
-    private void initBoard() {
+    private void initBoard(int w, int h) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JPanel headingPanel = new JPanel();
-        JLabel headingLabel = new JLabel("This is the heading panel for our demo course");
+        headingPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+
+        JLabel headingLabel = new JLabel("A* Search");
+
         headingPanel.add(headingLabel);
 
-        JPanel subPanel = new JPanel();
-        subPanel.setLayout(new GridBagLayout());
-        subPanel.setBorder(BorderFactory.createLineBorder(Color.red));
+        Grid subPanel = new Grid(w, h);
 
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.insets = new Insets(5, 5, 5, 5);
-        constraints.anchor = GridBagConstraints.NORTH;
+        JButton clr = new JButton("Clear");
 
-        constraints.gridx = 0;
-        constraints.gridy = 0;
+        clr.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                subPanel.clearContents();
+            }
+        });
 
-        JLabel userNameLabel = new JLabel("Enter your name :");
-        JLabel pwdLabel = new JLabel("Enter your password :");
-        JLabel emailLabel = new JLabel("Enter email :");
-        subPanel.add(userNameLabel, constraints);
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        subPanel.add(pwdLabel, constraints);
-        constraints.gridx = 0;
-        constraints.gridy = 2;
-        subPanel.add(emailLabel, constraints);
-        constraints.gridx = 0;
-        constraints.gridy = 3;
+        JButton fP = new JButton("Find Path");
+
+        fP.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                subPanel.findPath();
+            }
+        });
+
+        headingPanel.add(clr);
+        headingPanel.add(fP);
 
         add(headingPanel);
         add(subPanel);
