@@ -3,7 +3,8 @@ A simple pathfinding project to practice algorithms, java, and GUIs.
 
 
 
-##How to use
+## How to use
+
 Java 8 or later must be installed. After cloning this repo, type the command
 `javac Pathfinder/Pathfinder.java` in the highest Pathfinder directory. Then type
 `java Pathfinder.Pathfinder <WIDTH> <HEIGHT>`, where WIDTH and HEIGHT are the desired dimensions of the
